@@ -1,0 +1,39 @@
+- id: TELNET_ENABLED
+  title: Telnet kullanımı
+  type: presence
+  regex: '(?i)\btransport input\b.*\btelnet\b'
+  severity: 9
+  description: Telnet düz metin iletim yapar.
+  recommendation: transport input ssh
+
+- id: HTTP_SERVER_ENABLED
+  title: HTTP yönetim açık
+  type: presence
+  regex: '(?i)\bip http server\b'
+  severity: 6
+  description: HTTP yönetim saldırı yüzeyini artırır.
+  recommendation: no ip http server
+
+- id: SNMP_V12C_ENABLED
+  title: SNMP v1/v2c kullanımı
+  type: presence
+  regex: '(?i)\bsnmp-server community\b'
+  severity: 7
+  description: SNMP v1/v2c zayıf doğrulama kullanır.
+  recommendation: SNMPv3 kullanın
+
+- id: NTP_MISSING
+  title: NTP yok
+  type: absence
+  regex: '(?i)\bntp server\b'
+  severity: 4
+  description: Zaman senkronu yok.
+  recommendation: ntp server X.X.X.X
+
+- id: SYSLOG_MISSING
+  title: Syslog yok
+  type: absence
+  regex: '(?i)\blogging host\b'
+  severity: 5
+  description: Merkezi log yok.
+  recommendation: logging host X.X.X.X

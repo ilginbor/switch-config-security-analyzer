@@ -1,0 +1,15 @@
+hostname SW1
+snmp-server community S3cureStr1ng! RO
+
+line vty 0 4
+ transport input ssh
+
+ip ssh version 2
+ip http secure-server
+service password-encryption
+aaa new-model
+ip dhcp snooping
+ntp server 1.1.1.1
+logging host 10.10.10.10
+
+

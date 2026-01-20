@@ -1,0 +1,127 @@
+# ==============================
+# Switch Configuration Security Rules
+# Vendor-agnostic (Cisco / Huawei)
+# ==============================
+
+- id: TELNET_ENABLED
+  title: Telnet kullanımı
+  type: presence
+  regex: '(?i)\btransport input\b.*\btelnet\b|\btelnet server enable\b|\btelnet\b'
+  severity: 9
+  description: >
+    Telnet trafiği düz metin olarak iletilir. Ağ üzerinde dinleme (sniffing)
+    yapılarak kullanıcı adı ve parolalar ele geçirilebilir.
+  recommendation: >
+    Telnet kapatılmalı ve yerine SSH kullanılmalıdır
+    (Cisco: 'transport input ssh', Huawei: 'undo telnet server enable').
+
+- id: SSH_NOT_CONFIGURED
+  title: SSH yapılandırması yok
+  type: absence
+  regex: '(?i)\bip ssh\b|\btransport input\b.*\bssh\b|\bstelnet server enable\b|\bssh server\b'
+  severity: 7
+  description: >
+    SSH yapılandırması yoksa uzaktan yönetim güvenli değildir
+    veya Telnet gibi güvensiz protokoller kullanılabilir.
+  recommendation: >
+    SSH etkinleştirilmelidir
+    (Cisco: 'ip ssh version 2', Huawei: 'stelnet server enable').
+
+- id: HTTP_SERVER_ENABLED
+  title: HTTP yönetim arayüzü açık
+  type: presence
+  regex: '(?i)\bip http server\b|\bhttp server enable\b'
+  severity: 6
+  description: >
+    HTTP yönetim arayüzü açık olması saldırı yüzeyini artırır
+    ve kimlik bilgileri şifrelenmeden iletilebilir.
+  recommendation: >
+    HTTP kapatılmalı, mümkünse sadece HTTPS kullanılmalıdır.
+
+- id: HTTPS_SERVER_NOT_ENABLED
+  title: HTTPS yönetim arayüzü yok
+  type: absence
+  regex: '(?i)\bip http secure-server\b|\bhttps\b'
+  severity: 5
+  description: >
+    Web tabanlı yönetim kullanılacaksa HTTPS tercih edilmelidir.
+  recommendation: >
+    HTTPS etkinleştirilmelidir
+    (Cisco: 'ip http secure-server').
+
+- id: SNMP_PUBLIC
+  title: Varsayılan SNMP community kullanımı
+  type: presence
+  regex: '(?i)\bsnmp-server community\b\s+(public|private)\b|\bsnmp-agent community\b\s+(public|private)\b'
+  severity: 8
+  description: >
+    Varsayılan SNMP community string'leri saldırganlar tarafından
+    kolayca tahmin edilebilir ve cihaz bilgileri sızdırılabilir.
+  recommendation: >
+    Varsayılan community string'ler kaldırılmalı ve güçlü değerler kullanılmalıdır.
+
+- id: SNMP_V12C_ENABLED
+  title: SNMP v1/v2c kullanımı
+  type: presence
+  regex: '(?i)\bsnmp-server community\b|\bsnmp-agent\b'
+  severity: 7
+  description: >
+    SNMP v1/v2c community tabanlıdır ve kimlik doğrulama zayıftır.
+    Bilgi sızıntısı ve yetkisiz erişim riski oluşturur.
+  recommendation: >
+    SNMPv3 kullanılmalı veya SNMP erişimi ACL ile sınırlandırılmalıdır.
+
+- id: NTP_MISSING
+  title: NTP yapılandırması yok
+  type: absence
+  regex: '(?i)\bntp server\b|\bntp-service\b'
+  severity: 4
+  description: >
+    Zaman senkronizasyonu olmaması log korelasyonunu
+    ve olay analizi süreçlerini zorlaştırır.
+  recommendation: >
+    Güvenilir bir NTP sunucusu tanımlanmalıdır.
+
+- id: SYSLOG_MISSING
+  title: Merkezi log (syslog) yapılandırması yok
+  type: absence
+  regex: '(?i)\blogging host\b|\binfo-center loghost\b|\bsyslog\b'
+  severity: 5
+  description: >
+    Merkezi loglama yoksa güvenlik olayları kaçırılabilir
+    veya cihaz üzerindeki loglar silinebilir.
+  recommendation: >
+    Merkezi bir syslog sunucusu yapılandırılmalıdır.
+
+- id: SERVICE_PASSWORD_ENCRYPTION_MISSING
+  title: Parola şifreleme etkin değil
+  type: absence
+  regex: '(?i)\bservice password-encryption\b'
+  severity: 4
+  description: >
+    Parolalar yapılandırma dosyasında açık veya zayıf
+    şekilde saklanabilir.
+  recommendation: >
+    Parola şifreleme etkinleştirilmelidir.
+
+- id: AAA_NEW_MODEL_MISSING
+  title: AAA yapılandırması yok
+  type: absence
+  regex: '(?i)\baaa new-model\b|\baaa\b'
+  severity: 6
+  description: >
+    AAA olmaması kullanıcı doğrulama ve yetkilendirme
+    mekanizmalarını zayıflatır.
+  recommendation: >
+    AAA etkinleştirilmeli ve mümkünse merkezi kimlik doğrulama kullanılmalıdır.
+
+- id: DHCP_SNOOPING_MISSING
+  title: DHCP Snooping yapılandırması yok
+  type: absence
+  regex: '(?i)\bip dhcp snooping\b|\bdhcp snooping\b'
+  severity: 6
+  description: >
+    DHCP Snooping olmaması sahte DHCP sunucusu saldırılarına
+    yol açabilir.
+  recommendation: >
+    DHCP Snooping etkinleştirilmeli ve güvenilir portlar tanımlanmalıdır.

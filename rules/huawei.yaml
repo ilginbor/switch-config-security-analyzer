@@ -1,0 +1,31 @@
+- id: TELNET_ENABLED
+  title: Telnet kullanımı
+  type: presence
+  regex: '(?i)\btelnet server enable\b'
+  severity: 9
+  description: Telnet düz metin iletim yapar.
+  recommendation: undo telnet server enable
+
+- id: SNMP_V12C_ENABLED
+  title: SNMP v1/v2c kullanımı
+  type: presence
+  regex: '(?i)\bsnmp-agent\b'
+  severity: 7
+  description: SNMP v1/v2c zayıf doğrulama kullanır.
+  recommendation: SNMPv3 kullanın
+
+- id: NTP_MISSING
+  title: NTP yok
+  type: absence
+  regex: '(?i)\bntp-service\b'
+  severity: 4
+  description: Zaman senkronu yok.
+  recommendation: ntp-service enable
+
+- id: DHCP_SNOOPING_MISSING
+  title: DHCP Snooping yok
+  type: absence
+  regex: '(?i)\bdhcp snooping\b'
+  severity: 6
+  description: Sahte DHCP riski.
+  recommendation: dhcp snooping enable

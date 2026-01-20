@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <title>Switch Config Security Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    .card { border: 1px solid #ddd; border-radius: 10px; padding: 16px; margin: 12px 0; }
+    .meta { color: #555; margin-bottom: 10px; }
+    .finding { border-left: 4px solid #999; padding-left: 12px; margin: 10px 0; }
+    .sev { font-weight: bold; }
+    code { background: #f6f6f6; padding: 2px 6px; border-radius: 6px; }
+    .imgrow img { max-width: 520px; margin-right: 14px; border: 1px solid #eee; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Switch Konfigürasyon Güvenlik Analizi</h1>
+  <p class="meta">Toplam config: {{ results|length }}</p>
+
+  <h2>Genel Görseller</h2>
+  <div class="imgrow">
+    {% if top_findings_png %}<img src="{{ top_findings_png }}" alt="Top findings">{% endif %}
+    {% if risk_per_config_png %}<img src="{{ risk_per_config_png }}" alt="Risk per config">{% endif %}
+  </div>
+
+  <h2>Config Bazlı Sonuçlar</h2>
+  {% for r in results %}
+    <div class="card">
+      <h3>{{ r.config }}</h3>
+      <div class="meta">Risk score: <b>{{ r.risk_score }}/100</b> • Findings: <b>{{ r.findings|length }}</b></div>
+
+      {% for f in r.findings %}
+        <div class="finding">
+          <div class="sev">[{{ f.severity }}/10] {{ f.title }} <code>{{ f.rule_id }}</code></div>
+          <div><b>Açıklama:</b> {{ f.description }}</div>
+          <div><b>Öneri:</b> {{ f.recommendation }}</div>
+
+          {% if f.evidence and f.evidence|length > 0 %}
+            <div><b>Kanıt:</b></div>
+            <ul>
+              {% for e in f.evidence %}
+                <li>Satır {{ e.lineno }}: <code>{{ e.line }}</code></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</body>
+</html>

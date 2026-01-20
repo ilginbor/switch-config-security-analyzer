@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <title>Switch Config Security Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    .card { border: 1px solid #ddd; border-radius: 10px; padding: 16px; margin: 12px 0; }
+    .meta { color: #555; margin-bottom: 10px; }
+    .finding { border-left: 4px solid #999; padding-left: 12px; margin: 10px 0; }
+    .sev { font-weight: bold; }
+    code { background: #f6f6f6; padding: 2px 6px; border-radius: 6px; }
+    .imgrow img { max-width: 520px; margin-right: 14px; border: 1px solid #eee; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Switch Konfigürasyon Güvenlik Analizi</h1>
+  <p class="meta">Toplam config: 3</p>
+
+  <h2>Genel Görseller</h2>
+  <div class="imgrow">
+    <img src="top_findings.png" alt="Top findings">
+    <img src="risk_per_config.png" alt="Risk per config">
+  </div>
+
+  <h2>Config Bazlı Sonuçlar</h2>
+  
+    <div class="card">
+      <h3>cisco1.cfg</h3>
+      <div class="meta">Risk score: <b>39/100</b> • Findings: <b>5</b></div>
+
+      
+        <div class="finding">
+          <div class="sev">[9/10] Telnet kullanımı <code>TELNET_ENABLED</code></div>
+          <div><b>Açıklama:</b> Telnet düz metin iletim yapar.</div>
+          <div><b>Öneri:</b> transport input ssh</div>
+
+          
+            <div><b>Kanıt:</b></div>
+            <ul>
+              
+                <li>Satır 620: <code>transport input telnet ssh</code></li>
+              
+            </ul>
+          
+        </div>
+      
+        <div class="finding">
+          <div class="sev">[6/10] HTTP yönetim açık <code>HTTP_SERVER_ENABLED</code></div>
+          <div><b>Açıklama:</b> HTTP yönetim saldırı yüzeyini artırır.</div>
+          <div><b>Öneri:</b> no ip http server</div>
+
+          
+            <div><b>Kanıt:</b></div>
+            <ul>
+              
+                <li>Satır 583: <code>ip http server</code></li>
+              
+            </ul>
+          
+        </div>
+      
+        <div class="finding">
+          <div class="sev">[7/10] SNMP v1/v2c kullanımı <code>SNMP_V12C_ENABLED</code></div>
+          <div><b>Açıklama:</b> SNMP v1/v2c zayıf doğrulama kullanır.</div>
+          <div><b>Öneri:</b> SNMPv3 kullanın</div>
+
+          
+            <div><b>Kanıt:</b></div>
+            <ul>
+              
+                <li>Satır 598: <code>snmp-server community 1234rrrR RW</code></li>
+              
+            </ul>
+          
+        </div>
+      
+        <div class="finding">
+          <div class="sev">[4/10] NTP yok <code>NTP_MISSING</code></div>
+          <div><b>Açıklama:</b> Zaman senkronu yok.</div>
+          <div><b>Öneri:</b> ntp server X.X.X.X</div>
+
+          
+        </div>
+      
+        <div class="finding">
+          <div class="sev">[5/10] Syslog yok <code>SYSLOG_MISSING</code></div>
+          <div><b>Açıklama:</b> Merkezi log yok.</div>
+          <div><b>Öneri:</b> logging host X.X.X.X</div>
+
+          
+        </div>
+      
+    </div>
+  
+    <div class="card">
+      <h3>huawei1.cfg</h3>
+      <div class="meta">Risk score: <b>32/100</b> • Findings: <b>4</b></div>
+
+      
+        <div class="finding">
+          <div class="sev">[9/10] Telnet kullanımı <code>TELNET_ENABLED</code></div>
+          <div><b>Açıklama:</b> Telnet düz metin iletim yapar.</div>
+          <div><b>Öneri:</b> undo telnet server enable</div>
+
+          
+            <div><b>Kanıt:</b></div>
+            <ul>
+              
+                <li>Satır 36: <code>telnet server enable</code></li>
+              
+            </ul>
+          
+        </div>
+      
+        <div class="finding">
+          <div class="sev">[7/10] SNMP v1/v2c kullanımı <code>SNMP_V12C_ENABLED</code></div>
+          <div><b>Açıklama:</b> SNMP v1/v2c zayıf doğrulama kullanır.</div>
+          <div><b>Öneri:</b> SNMPv3 kullanın</div>
+
+          
+            <div><b>Kanıt:</b></div>
+            <ul>
+              
+                <li>Satır 450: <code>snmp-agent</code></li>
+              
+                <li>Satır 451: <code>snmp-agent local-engineid 800007DB03F44C7F29CDF0</code></li>
+              
+                <li>Satır 452: <code>snmp-agent community write cipher %^%#VJ2{Q_KC|LH)&gt;[#R9b\G.8OS,CDm1U-dh*:|]i:%5)gw@=L7L&lt;,8ll(-X=4:QM)40)xw$F!mpBCqw@b&#34;%^%# mib-view iso-view</code></li>
+              
+                <li>Satır 453: <code>snmp-agent sys-info version v2c v3</code></li>
+              
+                <li>Satır 454: <code>snmp-agent group v3 fastnac_group privacy read-view fastnac_view write-view fastnac_view notify-view fastnac_view</code></li>
+              
+                <li>Satır 455: <code>snmp-agent target-host trap address udp-domain 10.60.2.32 params securityname fastnac v3 privacy</code></li>
+              
+                <li>Satır 456: <code>snmp-agent mib-view included isoview iso</code></li>
+              
+                <li>Satır 457: <code>snmp-agent mib-view included iso-view iso</code></li>
+              
+                <li>Satır 458: <code>snmp-agent mib-view included isoview01 system</code></li>
+              
+                <li>Satır 459: <code>snmp-agent mib-view included isoview02 interfaces</code></li>
+              
+            </ul>
+          
+        </div>
+      
+        <div class="finding">
+          <div class="sev">[4/10] NTP yok <code>NTP_MISSING</code></div>
+          <div><b>Açıklama:</b> Zaman senkronu yok.</div>
+          <div><b>Öneri:</b> ntp-service enable</div>
+
+          
+        </div>
+      
+        <div class="finding">
+          <div class="sev">[6/10] DHCP Snooping yok <code>DHCP_SNOOPING_MISSING</code></div>
+          <div><b>Açıklama:</b> Sahte DHCP riski.</div>
+          <div><b>Öneri:</b> dhcp snooping enable</div>
+
+          
+        </div>
+      
+    </div>
+  
+    <div class="card">
+      <h3>sw1.txt</h3>
+      <div class="meta">Risk score: <b>9/100</b> • Findings: <b>1</b></div>
+
+      
+        <div class="finding">
+          <div class="sev">[7/10] SNMP v1/v2c kullanımı <code>SNMP_V12C_ENABLED</code></div>
+          <div><b>Açıklama:</b> SNMP v1/v2c zayıf doğrulama kullanır.</div>
+          <div><b>Öneri:</b> SNMPv3 kullanın</div>
+
+          
+            <div><b>Kanıt:</b></div>
+            <ul>
+              
+                <li>Satır 2: <code>snmp-server community S3cureStr1ng! RO</code></li>
+              
+            </ul>
+          
+        </div>
+      
+    </div>
+  
+</body>
+</html>
