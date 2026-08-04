@@ -1,0 +1,23 @@
+﻿# Sanal ortamlar
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+
+# Üretilen analiz çıktıları
+out/
+
+# Gereksiz proje kopyaları
+switchsec - Kopya/
+
+# Editör ve işletim sistemi
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
